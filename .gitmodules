@@ -1,0 +1,4 @@
+[submodule "odoo-bol/l10n_bo_invoice"]
+	path = odoo-bol/l10n_bo_invoice
+	url = git@github.com:odoo-bol/l10n_bo_invoice.git
+	branch = main

@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_activos_fijos_grupocontable,activos_fijos.grupocontable,model_activos_fijos_grupocontable,base.group_user,1,1,1,1
+access_activos_fijos_ufv,access_activos_fijos_ufv,model_activos_fijos_ufv,base.group_user,1,1,1,1
+access_activos_fijos_tabla_depreciacion,access_activos_fijos_tabla_depreciacion,model_activos_fijos_tabla_depreciacion,base.group_user,1,1,1,1
+access_activos_fijos_activofijo,access_activos_fijos_activofijo,model_activos_fijos_activofijo,base.group_user,1,1,1,1
+

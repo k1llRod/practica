@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="asset_modify_form" model="ir.ui.view">
+            <field name="name">wizard.asset.modify.form</field>
+            <field name="model">asset.modify</field>
+            <field name="inherit_id" ref="account_asset.asset_modify_form"/>
+            <field name="arch" type="xml">
+                <field name="account_depreciation_expense_id" position="after">
+                    <field name="account_inflation_tenure_id"/>
+                </field>
+                <!--
+                <field name="value_residual" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field> -->
+                <field name="salvage_value" position="after">
+                    <field name="minium_limit"/>
+                    <field name="minium_value"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</odoo>

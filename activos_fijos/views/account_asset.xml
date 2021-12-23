@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <!-- VISTA HEREDADA -->
+
+    <record id="view_account_asset_form" model="ir.ui.view">
+    <field name="name">view.account.asset.form</field>
+    <field name="model">account.asset</field>
+    <field name="inherit_id" ref="account_asset.view_account_asset_form"/>
+    <field name="arch" type="xml">
+      <!-- OCULTAR CAMPOS -->
+        <!--
+        <field name="method" position="replace">
+            <field name="method" attrs="{'invisible' : True}" />
+        </field>
+        <field name="method_number" position="replace">
+            <field name="method_number" attrs="{'invisible' : True}" />
+        </field>
+        <field name="method_period" position="replace">
+            <field name="method_period" attrs="{'invisible' : True}" />
+        </field>
+        <field name="prorata" position="replace">
+            <field name="prorata" attrs="{'invisible' : True}" />
+        </field>
+        -->
+        <xpath expr="//field[@name='method']" position="before" >
+             <field name="fixed_code" string="Base" attrs="{'invisible' : [('state', '!=', 'model')]}"/>
+             <field name="group_suffix" string="Sufijos" attrs="{'invisible' : [('state', '!=', 'model')]}"/>
+        </xpath>
+        <xpath expr="//field[@name='method_progress_factor']" position="attributes">
+            <attribute name="attrs">{'invisible' : ['|',('method', '==', 'bolivian'),('method','==','linear')]}</attribute>
+        </xpath>
+        <xpath expr="//field[@name='prorata']" position="attributes">
+            <attribute name="attrs">{'invisible' : [('method', '==', 'bolivian')]}</attribute>
+        </xpath>
+
+
+
+
+        <xpath expr="//button[@name='compute_depreciation_board']" position="attributes">
+            <attribute name="string">Calcular depreciación</attribute>
+        </xpath>
+
+        <field name="first_depreciation_date" position="replace">
+            <field name="first_depreciation_date" attrs="{'invisible' : True}" />
+        </field>
+        <!--
+        <xpath expr="//sheet/group/group[1]" position="after">
+          <group string="Grupos contables" attrs="{'invisible'}">
+              <field name="grupocontable_id" />
+              <field name="vida_util" />
+              <field name="set_valor"/>
+              <field name="currency_rate" />
+              <field name="valor" />
+              <fields name="depreciation_initial_auxiliar" />
+
+          </group>
+        </xpath>-->
+
+
+        <xpath expr="//sheet/group/group[2]" position="after" attrs="{'invisible' : [('state', '=', 'model')]}">
+          <group string="Carga con valor histórico" attrs="{'invisible' : [('state', '=', 'model')]}">
+              <field name="amount_massive"/>
+              <field name="accumulated_depreciation"/>
+              <field name="date_massive" />
+              <field name="historical_time_consumed"/>
+          </group>
+        </xpath>
+        <!--
+        <xpath expr="//field[@name='original_value']" position="after">
+            <field name="credito_fiscal" string="Credito fiscal"/>
+        </xpath> -->
+        <xpath expr="//field[@name='account_depreciation_expense_id']" position="after">
+            <field name="account_inflation_tenure_id"/>
+        </xpath>
+        <xpath expr="//field[@name='original_value']" position="before">
+            <field name="codigo_activo" />
+            <field name="hr_employee_id"/>
+        </xpath>
+         <xpath expr="//field[@name='acquisition_date']" position="after">
+             <field name="set_valor" />
+             <field name="first_depreciation_date" />
+             <field name="valor"/>
+
+
+        </xpath>
+
+
+        <xpath expr="//sheet/group/group[2]" position="after" >
+          <group string="Depreciación" attrs="{'invisible' : [('state', '=', 'model')]}">
+              <!--<field name="depreciado_historico" />
+              <field name="currency_rate_value" />
+              <field name="valor" />-->
+              <!--<field name="fecha_final" />-->
+              <field name="meses_consumidos" />
+              <field name="dias_consumidos" />
+              <field name="saldo"/>
+          </group>
+        </xpath>
+
+
+       <!-- <header>
+            <button type="object" name="action_depreciacion" string="Depreciación"/>
+        </header> -->
+        <div name="button_box">
+            <button class="oe_stat_button">
+                <field name="fecha_ufv_actual"/><field name="valor_ufv_actual"/>
+            </button>
+        </div>
+        <!--
+        <xpath expr="//sheet" position="inside">
+            <notebook>
+                <page string="Depreciacion">
+                    <field name="tabla_id" >
+                        <tree>
+                            <field name="name" />
+                            <field name="fecha_depreciacion" />
+                            <field name="ufv_inicial" />
+                            <field name="fecha_final"/>
+                            <field name="ufv_final"/>
+                            <field name="depreciacion"/>
+                            <field name="depreciacion_acumulada"/>
+                            <field name="asiento_contable"/>
+                        </tree>
+                    </field>
+
+                </page>
+            </notebook>
+        </xpath>
+        -->
+
+        <xpath expr="//field[@name='depreciation_move_ids']" position="replace" >
+            <field name="depreciation_move_ids"  mode="tree" options="{'reload_whole_on_button': true}" >
+                <tree string="Depreciación"  decoration-info="state=='draft'" default_order='date_ufv' >
+                    <field name="ref" string="Descrición activo"/>
+                    <field name="historical_depreciation" string="Valor histórico"/>
+                    <field name="initial_ufv" string="UFV inicial" optional="show"/>
+                    <field name="initial_date" string="Fecha inicial" optional="show"/>
+                    <field name="date_ufv" string="Fecha UFV" optional="show"/>
+                    <field name="value_ufv" string="UFV" optional="show"/>
+                    <field name="factor" optional="hide"/>
+                    <field name="updated_increment" string="Incremento por actualización" optional="show"/>
+                    <field name="updated_item" string="Valor actualizado" optional="show"/>
+                    <field name="depreciation_initial" string="Depreciación acumulada inicial" optional="show"/>
+                    <field name="aitb" string="AITB" optional="show"/>
+                    <field name="asset_depreciated_value" string="Depreciación" optional="show"/>
+                    <!-- <field name="year_acumulated_depreciation" /> -->
+                    <field name="year_acumulated_depreciation_updated" string="Depreciación acumulada actualizada" optional="show"/>
+                    <!-- <field name="year_acumulated_depreciation" /> -->
+                    <field name="net_worth_item" string="valor neto" optional="show"/>
+                    <field name="name" optional="show"/>
+                    <field name="state" invisible="1"/>
+
+                </tree>
+            </field>
+        </xpath>
+        </field>
+    </record>
+    <record id="account_asset_view_account_asset_purchase_tree_inherited" model="ir.ui.view">
+          <field name="name">account.asset.purchase.tree.inh</field>
+          <field name="model">account.asset</field>
+          <field name="inherit_id" ref="account_asset.view_account_asset_purchase_tree"/>
+          <field name="arch" type="xml">
+              <xpath expr="//field[@name='name']" position="after">
+                <field name="codigo_activo" required="1"/>
+                <field name="name_model" required="1"/>
+                <field name="hr_employee_id"/>
+              </xpath>
+
+          </field>
+      </record>
+      <record id="action_start_account_asset" model="ir.actions.server">
+            <field name="name">Iniciar activo</field>
+            <field name="model_id" ref="account_asset.model_account_asset"/>
+            <field name="binding_model_id" ref="account_asset.model_account_asset"/>
+            <field name="state">code</field>
+            <field name="code">action = records.star_account_asset()</field>
+      </record>
+      <record id="action_start_account_asset_account_entry" model="ir.actions.server">
+            <field name="name">Pubicar asiento contable</field>
+            <field name="model_id" ref="account_asset.model_account_asset"/>
+            <field name="binding_model_id" ref="account_asset.model_account_asset"/>
+            <field name="state">code</field>
+            <field name="code">action = records.select_accounting_entry_depreciation()</field>
+      </record>
+
+      <record id="action_select_depreciation" model="ir.actions.server">
+            <field name="name">Depreciar activo fijo</field>
+            <field name="model_id" ref="account_asset.model_account_asset"/>
+            <field name="binding_model_id" ref="account_asset.model_account_asset"/>
+            <field name="state">code</field>
+            <field name="code">action = records.select_depreciation_account_assets()</field>
+      </record>
+
+  </data>
+</odoo>

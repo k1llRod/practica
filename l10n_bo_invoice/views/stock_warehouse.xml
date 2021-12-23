@@ -1,0 +1,22 @@
+<odoo>
+    <data>
+        
+        <!-- Inherit Form View to Modify it -->
+        <record id="view_inherit_stock_warehouse_form" model="ir.ui.view">
+            <field name="name">view.inherit.stock.warehouse.form</field>
+            <field name="model">stock.warehouse</field>
+            <field name="inherit_id" ref="stock.view_warehouse"/>
+            <field name="arch" type="xml">
+                
+                <!-- position: after|before|replace|attributes|inside -->
+                <xpath expr="//field[@name='code']" position="after">
+                    <field name="dosificacion" />
+                    <field name="dosificacion_dc" />
+                    <field name="casa_matriz" />
+                </xpath>
+                
+            </field>
+        </record>
+        
+    </data>
+</odoo>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates id="template" xml:space="preserve">
+    <t t-name="l10n_bo_invoice.field_codigo_control">
+<!--        <div>-->
+            <t t-if="widget.mode=='readonly'">
+                <span class="o_field_float o_field_number o_field_widget" name="codigo_control">
+                    <t t-esc="widget.value" />
+                </span>
+            </t>
+            <t t-else="">
+<!--                <input class="o_field_float o_field_number o_field_widget o_input"-->
+<!--                       name="codigo_control"-->
+<!--                       placeholder="Còdigo de Control" type="text" autocomplete="none"/>-->
+                <input class="o_field_char o_field_widget o_input in_code_control"
+                       name="codigo_control"
+                       placeholder=""
+                       type="text"
+                       autocomplete="none"
+                       maxLength="100"
+                       t-att-value="widget.value"
+                       style="outline:none; text-transform:uppercase;"/>
+<!--                <input class="o_field_float o_field_number o_field_widget o_input in_code_control"-->
+<!--                       name="codigo_control"-->
+<!--                       maxLength="11"-->
+<!--                       t-att-value="widget.value"-->
+<!--                       style="outline:none; text-transform:uppercase;" />-->
+            </t>
+<!--        </div>-->
+    </t>
+</templates>

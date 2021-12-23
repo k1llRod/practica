@@ -1,0 +1,40 @@
+<odoo>
+
+    <data noupdate="1">
+        <record id="leyenda_control_a" model="legend.control">
+            <field name="name">Ley N° 453: Si se te ha vulnerado algún derecho puedes exigir la reposición o
+                restauración.
+            </field>
+            <field name="type">genericas</field>
+        </record>
+        <record id="leyenda_control_b" model="legend.control">
+            <field name="name">Ley N° 453: El proveedor deberá dar cumplimiento a las condiciones ofertadas.</field>
+            <field name="type">genericas</field>
+        </record>
+        <record id="leyenda_control_c" model="legend.control">
+            <field name="name">Ley N° 453: Están prohibidas las prácticas comerciales abusivas, tienes derecho a
+                denunciarlas.
+            </field>
+            <field name="type">genericas</field>
+        </record>
+        <record id="leyenda_control_d" model="legend.control">
+            <field name="name">Ley N° 453: Tienes derecho a recibir información que te proteja de la publicidad
+                engañosa.
+            </field>
+            <field name="type">genericas</field>
+        </record>
+        <record id="leyenda_control_e" model="legend.control">
+            <field name="name">Ley N° 453: Los contratos de adhesión deben redactarse en términos claros, comprensibles,
+                legibles y deben informar todas las facilidades y limitaciones.
+            </field>
+            <field name="type">genericas</field>
+        </record>
+        <record id="leyenda_control_f" model="legend.control">
+            <field name="name">Ley N° 453: Se debe promover el consumo solidario, justo, en armonía con la Madre Tierra
+                y precautelando el hábitat, en el marco del Vivir Bien.
+            </field>
+            <field name="type">genericas</field>
+        </record>
+    </data>
+
+</odoo>

@@ -1,0 +1,29 @@
+<odoo>
+
+    <data noupdate="1">
+        <record id="res_dosificacion_alerta_cron" model="ir.cron">
+            <field name="name">Limite Dosificaciones: Alertas</field>
+            <field name="model_id" ref="model_dosing_control"/>
+            <field name="state">code</field>
+            <field name="code">model.run_alerta()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="vr_accrued_alerta_cron" model="ir.cron">
+            <field name="name">Facturas Devengadas: Alertas</field>
+            <field name="model_id" ref="model_account_move"/>
+            <field name="state">code</field>
+            <field name="code">model.accrued_alert()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">months</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="active" eval="True"/>
+        </record>
+    </data>
+
+</odoo>

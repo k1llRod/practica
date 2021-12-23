@@ -1,0 +1,34 @@
+<odoo>
+  <data>
+    <record id="view_legend_control_tree" model="ir.ui.view">
+        <field name="name">view.legend.control.tree</field>
+        <field name="model">legend.control</field>
+        <field name="arch" type="xml">
+            <tree string="Leyendas" editable="bottom">
+                <field name="type"/>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_legend_control_view" model="ir.actions.act_window">
+        <field name="name">Leyendas</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">legend.control</field>
+        <field name="view_mode">tree</field>
+        <field name="help" type="html">
+          <p class="oe_view_nocontent_create">
+            Clic en CREAR para agregar una nueva leyenda
+          </p><p>
+
+          </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_legend_control_action"
+              name="Leyendas"
+              parent="menu_valid_code_control_root"
+              action="action_legend_control_view"
+              sequence="1"/>
+  </data>
+</odoo>

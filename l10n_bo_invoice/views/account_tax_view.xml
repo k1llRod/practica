@@ -1,0 +1,23 @@
+<odoo>
+    <data>
+        <!-- Inherit Form View to Modify it -->
+        <record id="view_inherit_account_tax_form" model="ir.ui.view">
+            <field name="name">view.inherit.account_tax.form</field>
+            <field name="model">account.tax</field>
+            <field name="inherit_id" ref="account.view_tax_form"/>
+            <field name="arch" type="xml">
+                
+                <!-- position: after|before|replace|attributes|inside -->
+                <xpath expr="//field[@name='active']" position="after">
+                    <field name="option_lcv"/>
+                </xpath>
+
+                <!--UNIVERSAL DISCOUNT-->
+                <xpath expr="//field[@name='active']" position="before">
+                    <field name="control_tax" widget="boolean_toggle"/>
+                </xpath>
+                
+            </field>
+        </record>
+    </data>
+</odoo>

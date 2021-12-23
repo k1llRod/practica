@@ -1,0 +1,29 @@
+<odoo>
+
+    <data>
+        <!-- Inherit Form View to Modify it -->
+        <record id="inherit_account_journal_form" model="ir.ui.view">
+            <field name="name">inherit.account.journal.form</field>
+            <field name="model">account.journal</field>
+            <field name="inherit_id" ref="account.view_account_journal_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//notebook/page[@name='bank_account']/group/group[last()]" position="after">
+                    <group string="Configuración Adicional">
+                        <field name="applicable_tax"/>
+                        <field name="visible_commission" invisible="1"/>
+                    </group>
+                    <group string="Comision" attrs="{'invisible': [('visible_commission', '=', False)]}">
+                        <field name="bank_commission_rate" widget="percentage"/>
+<!--                        <field name="accounting_account"/>-->
+                    </group>
+                </xpath>
+
+                <field name="payment_debit_account_id" position="after">
+                    <field name="commission_grouping_account_id" attrs="{'required': [('bank_commission_rate', '!=', 0)], 'invisible': [('visible_commission', '=', False)]}"/>
+                </field>
+
+            </field>
+        </record>
+    </data>
+</odoo>

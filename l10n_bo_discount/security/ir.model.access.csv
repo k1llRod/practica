@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_wizard_sale_discount_base_user,l10n_bo_discount.wizard_sale_discount_base_user,model_wizard_sale_discount,base.group_user,1,1,1,0

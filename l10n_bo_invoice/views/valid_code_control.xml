@@ -1,0 +1,42 @@
+<odoo>
+    <record id="view_valida_code_control_tree" model="ir.ui.view">
+        <field name="name">view.valid_code_control.tree</field>
+        <field name="model">valid_code_control</field>
+        <field name="arch" type="xml">
+            <tree string="Validación de Códigos de Control" editable="bottom">
+                <field name="n_autorizacion"/>
+                <field name="n_factura"/>
+                <field name="nit_ci"/>
+                <field name="fecha"/>
+                <field name="monto"/>
+                <field name="llave"/>
+<!--                <button name="get_cc" string="Generar" type="object" icon="fa-list"></button>-->
+                <field name="codigo_control"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_valid_code_control_view" model="ir.actions.act_window">
+        <field name="name">Validar Códigos de Control</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">valid_code_control</field>
+        <field name="view_mode">tree</field>
+        <field name="help" type="html">
+          <p class="oe_view_nocontent_create">
+            Clic en CREAR para comenzar la validación
+          </p><p>
+
+          </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_valid_code_control_root" 
+              name="Oficina Virtual SIN"
+              sequence="6"
+              parent="account.menu_finance_configuration"/>
+    <menuitem id="menu_valid_code_control_view"
+              name="Validar Códigos de Control"
+              parent="menu_valid_code_control_root"
+              action="action_valid_code_control_view"
+              sequence="10"/>
+</odoo>

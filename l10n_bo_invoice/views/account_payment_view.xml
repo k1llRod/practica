@@ -1,0 +1,36 @@
+<odoo>
+    <data>
+        <!-- Inherit Form View to Modify it -->
+        <record id="view_inherit_account_payment_form" model="ir.ui.view">
+            <field name="name">view.inherit.account.payment.form</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="arch" type="xml">
+                <!--Monto pagado y cambio en pagos-->
+                <!--Comentado por falta de utilidad y aplicación-->
+                <!--                <xpath expr="//field[@name='ref']" position="after">-->
+                <!--                    <field name="amount_pay"/>-->
+                <!--                    <field name="amount_change"/>-->
+                <!--                </xpath>-->
+                <xpath expr="//button[@name='action_draft']" position="replace">
+                    <button name="action_draft" string="Reset To Draft" type="object" class="btn btn-secondary"
+                            attrs="{'invisible': [('state', 'not in', ('posted', 'cancel'))]}"
+                            groups="account.group_account_manager"/>
+                </xpath>
+
+                <xpath expr="//field[@name='journal_id']" position="after">
+                    <field name="amount_itf" invisible="1"/>
+                    <div></div>
+                    <div style="font-size:11px; color:#68465f;">
+                        <span attrs="{'invisible':[('amount_itf','=',0)]}">
+                            - Impuesto ITF (<field name="amount_itf" readonly="1"/>)
+                        </span>
+                        <span attrs="{'invisible':[('amount_bank_commission','=',0)]}" style="float:left;">
+                            - Tasa de comisión bancaria (<field name="amount_bank_commission" readonly="1" widget="percentage"/>)
+                        </span>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

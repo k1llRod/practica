@@ -1,0 +1,105 @@
+<odoo>
+    <data>
+        <!-- Inherit Form View to Modify it -->
+        <record id="view_inherit_mod_partner_form" model="ir.ui.view">
+            <field name="name">view.inherit.mod_partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+
+                <!-- position: after|before|replace|attributes|inside -->
+                <xpath expr="//field[@name='vat']" position="before">
+                    <field name="razon_social"></field>
+                    <label for="nit_ci" string="NIT o CI"/>
+                    <div style="display:flex; flex-flow:row nowrap">
+                        <field name="nit_ci"></field>
+                        <div style="display:flex; flex-flow:row nowrap; margin-left:4px;"
+                             attrs="{'invisible':[('company_type','=','company')]}">
+                            <t class="oe_read_only">-</t>
+                            <label for="extension" class="oe_edit_only" style="font-weight:bold" string="Ext"/>
+                            <field name="extension"></field>
+                            <label for="expedido" class="oe_edit_only" style="font-weight:bold" string="Exp"/>
+                            <t class="oe_read_only">(</t>
+                            <field name="expedido"></field>
+                            <t class="oe_read_only">)</t>
+                        </div>
+                    </div>
+                </xpath>
+
+            </field>
+        </record>
+
+
+        <record id="view_inherit_mod_res_partner_form" model="ir.ui.view">
+            <field name="name">view.inherit.mod.res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
+            <field name="arch" type="xml">
+
+                <!-- position: after|before|replace|attributes|inside -->
+                <xpath expr="//search/field[@name='name']" position="after">
+                    <field name="nit_ci"/>
+                </xpath>
+
+            </field>
+        </record>
+
+        <!-- Inherit Form View to Modify it -->
+        <record id="view_inherit_mod_res_partner_kanban" model="ir.ui.view">
+            <field name="name">view.inherit.mod.res.partner.kanban</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.res_partner_kanban_view"/>
+            <field name="arch" type="xml">
+
+                <!-- position: after|before|replace|attributes|inside -->
+                <xpath expr="//kanban/field[@name='display_name']" position="after">
+                    <field name="nit_ci"/>
+                </xpath>
+                <xpath expr="//kanban/templates/t/div/div/strong" position="after">
+                    <div attrs="{'invisible':[('nit_ci','=','0')]}"
+                         style="display:flex; align-item:center; flex-flow:row nowrap;">
+                        <strong style="margin-right:4px">NIT/CI</strong>
+                        <field name="nit_ci"/>
+                        <span style="margin-left:4px;">
+                            <field name="expedido"/>
+                        </span>
+                    </div>
+                </xpath>
+
+            </field>
+        </record>
+
+        <record id="view_mod_res_partner_inherit_tree" model="ir.ui.view">
+            <field name="name">view.mod.res.partner.inherit.tree</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_tree"/>
+            <field name="arch" type="xml">
+
+                <!-- position: after|before|replace|attributes|inside -->
+                <xpath expr="//field[@name='display_name']" position="after">
+                    <field name="nit_ci"></field>
+                    <field name="expedido"></field>
+                </xpath>
+
+            </field>
+        </record>
+
+        <record id="res_partner_form_inherited" model="ir.ui.view">
+            <field name="name">res_partner_form_inherited</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <!-- subcontacto k1llRod -->
+                <xpath expr="//sheet/notebook/page[1]/field[@name='child_ids']/form/sheet/group/group[1]/field[@name='name']" position="after">
+                    <field name="razon_social"/>
+                    <field name="nit_ci"/>
+                    <field name="vat"/>
+
+                </xpath>
+
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

@@ -1,0 +1,29 @@
+<odoo>
+    <data>
+        <!-- Inherit Form View to Modify it -->
+        <record id="view_product_template_form" model="ir.ui.view">
+            <field name="name">view.inherit.product.template.form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+
+<!--                <xpath expr="//field[@name='property_account_income_id']" position="after">-->
+<!--                    <field name="ali_esp"/>-->
+<!--                    <field name="ali_por"/>-->
+<!--                    <field name="ali_uom"/>-->
+<!--                    <field name="ali_qty"/>-->
+<!--                </xpath>-->
+
+                <!--UNIVERSAL DISCOUNT-->
+                <!-- position values: after|before|replace|attributes|inside -->
+                <xpath expr="//div[@name='options']" position="after">
+                     <div>
+                        <field name="product_discount"/>
+                        <label for="product_discount"/>
+                     </div>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

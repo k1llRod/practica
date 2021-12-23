@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <record id="wizard_sale_discount_view" model="ir.ui.view">
+        <field name="name">Descuento por Venta</field>
+        <field name="model">wizard.sale.discount</field>
+        <field name="arch" type="xml">
+            <form string="Balance General">
+                <group col="1">
+                    <field name="date_init"/>
+                    <field name="date_end"/>
+                    <field name="warehouse_ids" widget="many2many_tags"/>
+                </group>
+                <footer>
+                    <!--<button name="generate_report" string="Generar PDF" type="object" class="btn-primary"/>-->
+                    <button name="action_get_report" string="Generar Reporte" type="object" class="btn-primary"/>
+                    <button string="CANCELAR" class="oe_link" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="wizard_sale_discount_action" model="ir.actions.act_window">
+        <field name="name">Descuento por Ventas</field>
+        <field name="res_model">wizard.sale.discount</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem name="Descuento por Ventas" action="wizard_sale_discount_action" id="wizard_sale_discount_menu" parent="sale.menu_sale_report" sequence="13"/>
+
+  </data>
+</odoo>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Adición campos de descuentos desde orden de venta -->
+        <record id="vr_view_order_form_discount_inherit" model="ir.ui.view">
+            <field name="name">vr.view.order.form.discount.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_line']/tree//field[@name='price_unit']" position="after">
+                    <field name="disc" optional="show"/>
+                    <field name="total_discount" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']" position="before">
+                    <label for="cal_discount" class="btn btn-ship btn-primary oe_edit_only"
+                           style="margin-bottom:20px; float:right;" attrs="{'invisible': [('state','not in',['draft','sent'])]}"/>
+                    <field name="cal_discount" class="oe_edit_only"
+                           style="display:none;" attrs="{'invisible': [('state','not in',['draft','sent'])]}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Modifiación de campos Universal Discount -->
+        <record id="vr_view_order_form_discount_global_inherit" model="ir.ui.view">
+            <field name="name">vr.view.order.form.discount.global.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="l10n_bo_invoice.view_inherit_sale_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='global_discount_type']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </xpath>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

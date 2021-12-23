@@ -1,0 +1,63 @@
+<odoo>
+    <data>
+
+        <!-- Inherit Form View to Modify it -->
+        <record id="view_inherit_sale_order_form" model="ir.ui.view">
+            <field name="name">view.inherit.sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//group/field[@name='partner_id']" position="after">
+                    <label for="nit_ci" string="NIT/CI"/>
+                    <div style="display:flex; flex-flow:row nowrap; margin-left:4px;">
+                        <field name="nit_ci"></field>
+                        <t class="oe_read_only">-</t>
+                        <label for="extension" class="oe_edit_only" style="font-weight:bold" string="Ext"/>
+                        <field name="extension"></field>
+                    </div>
+                    <field name="razon_social"></field>
+                </xpath>
+                <xpath expr="//field[@name='amount_tax']" position="after">
+                    <field name="amount_ice"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/form/group/group/field[@name='price_unit']" position="before">
+                    <field name="amount_ali_esp"/>
+                    <field name="amount_ali_por"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']" position="before">
+                    <field name="amount_ali_esp" optional="hide"/>
+                    <field name="amount_ali_por" optional="hide"/>
+                </xpath>
+
+                <!--UNIVERSAL DISCOUNT-->
+                <xpath expr="//form/sheet/notebook/page/group" position="before">
+                    <div class="l10n_container">
+                        <field name="enable_discount" invisible="1"/>
+                        <label for="global_discount_type" string="Universal Discount Type:"
+                               attrs="{'invisible':[('enable_discount','!=',True),('amount_discount','=',0)]}"/>
+                        <field name="global_discount_type" class="oe_inline" style="width:100px !important" attrs="{'invisible':[('enable_discount','!=',True),('amount_discount','=',0)],
+                                                                                         'readonly':[('enable_discount','!=',True),('amount_discount','!=',0)]}"/>
+                    </div>
+                    <div class="l10n_container">
+                        <label for="global_discount_rate" string="Universal Discount:"
+                               attrs="{'invisible':[('enable_discount','!=',True),('amount_discount','=',0)]}"/>
+                        <field name="global_discount_rate" class="oe_inline"
+                               attrs="{'invisible':[('enable_discount','!=',True),('amount_discount','=',0)],'readonly':[('enable_discount','!=',True),('amount_discount','!=',0)]}"/>
+                    </div>
+                </xpath>
+                <xpath expr="//field[@name='amount_tax']" position="after">
+                    <field name="amount_discount"
+                           attrs="{'invisible':[('enable_discount','!=',True),('amount_discount','=',0)]}"/>
+                </xpath>
+
+                <!--Quitar sección y nota de sale order-->
+                <xpath expr="//create[@name='add_section_control']" position="replace">
+                </xpath>
+                <!--                <xpath expr="//create[@name='add_note_control']" position="replace">-->
+                <!--                </xpath>-->
+            </field>
+        </record>
+
+    </data>
+</odoo>

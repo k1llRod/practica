@@ -1,0 +1,80 @@
+<odoo>
+
+    <data>
+
+        <!-- Inherit Form View to Modify it -->
+        <record id="inherit_account_move_form" model="ir.ui.view">
+            <field name="name">inherit.account.move.form</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='invoice_line_ids']" position="before">
+                    <label for="my_process_exe"
+                           class="btn btn-ship btn-primary oe_edit_only oe_right"
+                           style="margin-bottom:20px"
+                           attrs="{'invisible':[('move_type','=','out_invoice')]}"/>
+                    <field name="my_process_exe" class="oe_edit_only"
+                           style="display:none;"
+                           attrs="{'invisible':[('move_type','=','out_invoice')]}"/>
+                </xpath>
+
+                <xpath expr="//div[@name='journal_div']" position="after">
+                    <field name="sum_exento" invisible="1" />
+                    <field name="not_calculated" invisible="1"/>
+                    <field name="exento_activated" invisible="1"/>
+                </xpath>
+
+                <xpath expr="//field[@name='invoice_line_ids']/tree//field[last()]" position="after">
+                    <field name="row_exento" invisible="1" force_save="1" />
+                </xpath>
+                <xpath expr="//field[@name='line_ids']/tree//field[last()]" position="after">
+                    <field name="row_exento" invisible="1" />
+                </xpath>
+                <!--Inserción campo exento en factura de proveedor-->
+                <xpath expr="//field[@name='invoice_line_ids']/tree//field[@name='amount_exe']" position="replace">
+                    <field name="amount_exe" invisible="context.get('default_move_type') != ('in_invoice')"/>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']/tree//field[@name='amount_exe']" position="replace">
+                    <field name="amount_exe" invisible="1" />
+                </xpath>
+
+                <!--Deshabilitar campos que son parte de la fila del EXENTO-->
+                <xpath expr="//field[@name='invoice_line_ids']/tree//field[@name='product_id']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('row_exento', '=', True)]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line_ids']/tree//field[@name='name']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('row_exento', '=', True)]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line_ids']/tree//field[@name='amount_exe']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('row_exento', '=', True)]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line_ids']/tree//field[@name='price_unit']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('row_exento', '=', True)]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line_ids']/tree//field[@name='account_id']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('row_exento', '=', True)]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line_ids']/tree//field[@name='analytic_account_id']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('row_exento', '=', True)]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line_ids']/tree//field[@name='analytic_tag_ids']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('row_exento', '=', True)]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line_ids']/tree//field[@name='product_uom_id']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('row_exento', '=', True)]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line_ids']/tree//field[@name='quantity']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('row_exento', '=', True)]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line_ids']/tree//field[@name='tax_ids']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('row_exento', '=', True)]}</attribute>
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+
+</odoo>

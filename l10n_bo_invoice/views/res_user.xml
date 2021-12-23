@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Inherit Form View to Modify it -->
+        <record id="10n_bo_inherit_res_user" model="ir.ui.view">
+            <field name="name">10n.bo.inherit.res.user</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='tz']" position="after">
+                    <field name="warehouse_id"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

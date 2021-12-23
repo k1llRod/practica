@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_account_move_reversal_inh" model="ir.ui.view">
+            <field name="name">account.move.reversal.form.inh</field>
+            <field name="model">account.move.reversal</field>
+            <field name="inherit_id" ref="account.view_account_move_reversal"/>
+            <field name="arch" type="xml">
+                <field name="reason" position="after">
+                    <field name="invoice_date_origin"/>
+                    <field name="nota_credito_debito" readonly="1" force_save="1"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_valid_code_control,valid_code_control,model_valid_code_control,base.group_user,1,1,1,1
+access_legends_control,legends_control,model_legend_control,base.group_user,1,1,1,1
+access_economic_activity,economic_activity,model_economic_activity,base.group_user,1,1,1,1
+access_dosing_control,dosing_control,model_dosing_control,base.group_user,1,1,1,1
+access_stock_warehouse,stock_warehouse,model_stock_warehouse,base.group_user,1,1,1,1

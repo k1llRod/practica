@@ -1,0 +1,641 @@
+<odoo>
+    <data>
+
+        <record id="paperformat_euro_bol" model="report.paperformat">
+            <field name="name">Formato A4</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">2</field>
+            <field name="margin_bottom">2</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">35</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="account_invoices_bol_original" model="ir.actions.report">
+            <field name="name">Factura Original</field>
+            <field name="model">account.move</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">l10n_bo_invoice.report_invoice_bol_original</field>
+            <field name="report_file">l10n_bo_invoice.report_invoice_bol_original</field>
+            <field name="attachment">(object.state in ['open','paid','in_payment']) and ('INV'+(object.number or '').replace('/','_')+'.pdf')</field>
+            <field name="binding_type">report</field>
+        </record>
+
+        <record id="account_invoices_bol_copia" model="ir.actions.report">
+            <field name="name">Factura Copia</field>
+            <field name="model">account.move</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">l10n_bo_invoice.report_invoice_bol_copia</field>
+            <field name="report_file">l10n_bo_invoice.report_invoice_bol_copia</field>
+            <field name="attachment">(object.state in ['open','paid','in_payment']) and ('INV'+(object.number or '').replace('/','_')+'.pdf')</field>
+            <field name="binding_type">report</field>
+        </record>
+
+<!--        <report-->
+<!--                id="account_invoices_bol_copia"-->
+<!--                model="account.move"-->
+<!--                string="Factura Copia"-->
+<!--                report_type="qweb-pdf"-->
+<!--                name="l10n_bo_invoice.report_invoice_bol_copia"-->
+<!--                file="l10n_bo_invoice.report_invoice_bol_copia"-->
+<!--                paperformat="l10n_bo_invoice.paperformat_euro_bol"-->
+<!--                menu="False"-->
+<!--                attachment="(object.state in ('open','paid','in_payment')) and ('INV_C'+(object.number or '').replace('/','')+'.pdf')"-->
+<!--        />-->
+
+        <template id="report_invoice_document_bol_original">
+            <t t-call="web.internal_layout">
+                <t t-set="o" t-value="o.with_context(lang=lang)"/>
+                <div class="page">
+                    <div style="height: 5px;">
+                    </div>
+                    <table style="border-collapse: collapse; width: 100%;">
+                        <col width="40%"/>
+                        <col width="20%"/>
+                        <col width="40%"/>
+                        <tr>
+                            <td>
+                                <div class="col-6"
+                                     style="margin-left:0px; margin-bottom:1px; text-align: left;">
+                                    <img style="width: 300px; height: 104px; margin-left: 0px;"
+                                         t-if="o.company_id.logo"
+                                         t-att-src="image_data_uri(o.company_id.logo)"
+                                         alt="Logo"/>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <h2>
+                                    <strong>FACTURA</strong>
+                                </h2>
+                            </td>
+                            <td>
+                                <div style="width:300px;">
+                                    <ul style="list-style: none; line-height:150%; font-size:14px;">
+                                        <li>
+                                            <div style="text-align:left; float:left; width:130px;">
+                                                <strong>NIT:</strong>
+                                            </div>
+                                            <div align="left" t-field="o.company_id.nit_ci"/>
+                                        </li>
+                                        <li>
+                                            <div style="text-align:left; float:left; width:130px;">
+                                                <strong>N° de Factura:</strong>
+                                            </div>
+                                            <div align="left">
+                                                <t t-esc="'%.0f'%o.n_factura"/>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div style="text-align:left; float:left; width:130px;">
+                                                <strong>N° Autorización:</strong>
+                                            </div>
+                                            <div align="left" t-field="o.n_autorizacion"/>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">
+                                <t t-if="o.warehouse_id.casa_matriz">
+                                    <ul style="list-style: none; line-height:100%; font-size:14px;
+                                                margin-top:-12px;margin-left:-65px">
+                                        <li>
+                                            <strong>CASA MATRIZ</strong>
+                                        </li>
+                                        <li>
+                                            <span t-field="o.company_id.partner_id.street"/>
+                                        </li>
+                                        <li>
+                                            Teléfono:
+                                            <span t-field="o.company_id.partner_id.phone"/>
+                                        </li>
+                                        <li>
+                                            <span t-field="o.company_id.partner_id.city"/>-
+                                            <span t-field="o.company_id.partner_id.country_id.name"/>
+                                        </li>
+                                    </ul>
+                                </t>
+                                <t t-if="not o.warehouse_id.casa_matriz">
+                                    <ul style="list-style: none; line-height:100%; font-size:12px;
+                                                margin-top:-12px;margin-left:-65px">
+                                        <li>
+                                            <strong>
+                                                <span t-field="o.warehouse_id.name"/>
+                                            </strong>
+                                        </li>
+                                        <li>
+                                            <span t-field="o.warehouse_id.partner_id.street"/>
+                                        </li>
+                                        <li>
+                                            Teléfono:
+                                            <span t-field="o.warehouse_id.partner_id.phone"/>
+                                        </li>
+                                        <li>
+                                            <span t-field="o.warehouse_id.partner_id.city"/>-
+                                            <span t-field="o.warehouse_id.partner_id.country_id.name"/>
+                                        </li>
+                                    </ul>
+                                </t>
+                            </td>
+                            <td>
+                                <h1>&amp;nbsp;</h1>
+                            </td>
+                            <td class="text-center">
+                                <ul style="list-style: none; line-height:100%; font-size:14px; margin-top:-19px">
+                                    <li>
+                                        <h5>
+                                            <strong>ORIGINAL</strong>
+                                        </h5>
+                                        <span t-field="o.dosificacion.actividad.name"/>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                    <table>
+                        <col width="50%"/>
+                        <col width="30%"/>
+                        <col width="20%"/>
+                        <tr>
+                            <td class="text-left" colspan="3">
+                                <strong>Lugar y fecha:</strong>
+                                <t t-if="o.warehouse_id.casa_matriz">
+                                    <span t-field="o.company_id.partner_id.city"/>,
+                                </t>
+                                <t t-if="not o.warehouse_id.casa_matriz">
+                                    <span t-field="o.warehouse_id.partner_id.city"/>,
+                                </t>
+                                <!--<span t-esc="o.invoice_date.strftime(' %A, %d de %B del %Y')"/>-->
+                                <span t-field="o.invoice_date" t-options="{'format': 'EEEE, d '}"/>
+                                de
+                                <span t-field="o.invoice_date" t-options="{'format': 'MMMM '}"/>
+                                del
+                                <span t-field="o.invoice_date" t-options="{'format': 'YYYY'}"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-left" colspan="2">
+                                <strong>Señor(es):</strong>
+                                <span t-field="o.razon_social"/>
+                            </td>
+                            <td class="text-left">
+                                <strong>NIT/CI:</strong>
+                                <t t-if="o.extension">
+                                    <td style="text-align:left;">
+                                        <span t-esc="o.nit_ci+'-'+o.extension"/>
+                                    </td>
+                                </t>
+                                <t t-else="">
+                                    <td style="text-align:left;">
+                                        <span t-field="o.nit_ci"/>
+                                    </td>
+                                </t>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <!-- Is there a discount on at least one line? -->
+                    <t t-set="display_discount" t-value="any([l.discount for l in o.invoice_line_ids])"/>
+                    <table class="table table-sm" style="width:100%;">
+                        <col width="18%"/>
+                        <col width="46%"/>
+                        <col width="18%"/>
+                        <col width="18%"/>
+                        <thead>
+                            <tr style="line-height: 18px;">
+                                <th class="text-center" style="border:1px solid #000;">CANTIDAD</th>
+                                <td class="text-center" style="border:1px solid #000;">CONCEPTO</td>
+                                <th class="text-center" style="border:1px solid #000;">PRECIO UNIT</th>
+                                <td class="text-center" style="border:1px solid #000;">SUBTOTAL</td>
+                            </tr>
+                        </thead>
+                        <tbody class="invoice_tbody">
+                            <t t-set="lines"
+                               t-value="o.invoice_line_ids.sorted(key=lambda l: (-l.sequence, l.date, l.move_name, -l.id), reverse=True)"/>
+                            <t t-foreach="lines" t-as="line">
+                                <tr style="line-height: 18px;"
+                                    t-att-class="'bg-200 font-weight-bold o_line_section' if line.display_type == 'line_section' else 'font-italic o_line_note' if line.display_type == 'line_note' else ''">
+                                    <t t-if="not line.display_type" name="account_invoice_line_accountable">
+                                        <td class="text-center" style="border:1px solid #000;">
+                                            <span t-field="line.quantity"/>
+                                            <span t-field="line.uom_id" groups="product.group_uom"/>
+                                        </td>
+                                        <td style="border:1px solid #000;">
+                                            <span t-field="line.product_id.name"/>
+                                        </td>
+                                        <td class="text-right" style="border:1px solid #000;">
+                                            <t t-esc="'{0:,.2f}'.format(line.price_unit)"/>
+                                        </td>
+                                        <td class="text-right" style="border:1px solid #000;">
+                                            <t t-set="t_total" t-value="line.quantity*line.price_unit"/>
+                                            <t t-esc="'{0:,.2f}'.format(t_total)"/>
+                                        </td>
+                                    </t>
+                                    <t t-if="line.display_type == 'line_section'">
+                                        <td colspan="99" style="border:1px solid #000;">
+                                            <span t-field="line.name" t-options="{'widget': 'text'}"/>
+                                        </td>
+                                        <t t-set="current_section" t-value="line"/>
+                                        <t t-set="current_subtotal" t-value="0"/>
+                                    </t>
+                                    <t t-if="line.display_type == 'line_note'">
+                                        <td colspan="99" style="border:1px solid #000;">
+                                            <span class="o_field_text"
+                                                  t-field="line.name" t-options="{'widget': 'text'}"/>
+                                        </td>
+                                    </t>
+                                </tr>
+                            </t>
+                            <tr t-foreach="range(max(5-len(o.invoice_line_ids),0))" t-as="l"
+                                style="line-height: 18px; border:1px solid #000;">
+                                <td style="line-height: 18px; border:1px solid #000;">&amp;nbsp;</td>
+                                <td style="line-height: 18px; border:1px solid #000;"></td>
+                                <td style="line-height: 18px; border:1px solid #000;"></td>
+                                <td style="line-height: 18px; border:1px solid #000;"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" rowspan="3">
+                                    <t>
+                                        <strong>Son:</strong>
+                                        <span t-esc="o.amount_text"/>
+                                    </t>
+                                    <br></br>
+                                    <t t-if="o.amount_imp != o.amount_total">
+                                        <strong>Importe base para Crédito Fiscal, Ley° 317 Bs.:</strong>
+                                        <t t-esc="'{0:,.2f}'.format(o.amount_total-o.amount_exe - o.amount_ice_iehd)"/>
+                                    </t>
+                                    <br t-if="o.amount_imp != o.amount_total"></br>
+                                    <t>
+                                        <strong>Código de Control:</strong>
+                                        <span t-field="o.codigo_control"/>
+                                    </t>
+                                    <br></br>
+                                    <t>
+                                        <strong>Fecha Límite de Emisión:</strong>
+                                        <span t-field="o.date_end"/>
+                                    </t>
+                                </td>
+                                <td style="border:1px solid #000; height: 18px !important;">
+                                    SUBTOTAL Bs.:
+                                </td>
+                                <td class="text-right" style="border:1px solid #000; height: 18px !important;">
+                                    <t t-esc="'{0:,.2f}'.format(o.amount_open)"/>
+                                </td>
+                            </tr>
+                            <tr style="line-height: 18px;">
+                                <td style="border:1px solid #000;">
+                                    DESCUENTO Bs.:
+                                </td>
+                                <td class="text-right" style="border:1px solid #000;">
+                                    <t t-esc="'{0:,.2f}'.format(o.amount_des)"/>
+                                </td>
+                            </tr>
+                            <tr style="line-height: 18px;">
+                                <td style="border:1px solid #000;">
+                                    TOTAL Bs.:
+                                </td>
+                                <td class="text-right" style="border:1px solid #000;">
+                                    <t t-esc="'{0:,.2f}'.format(o.amount_total)"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table>
+                        <tr>
+                            <td coslpan="4">
+                                <img t-if="o.qr_image" t-att-src="image_data_uri(o.qr_image)"
+                                     class="float-right"
+                                     alt="Logo"
+                                     style="width: 150px; height: 150px; margin-right: 10px; display:inline"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td coslpan="4">
+                                <strong style="font-size:14px; font-weight: bold;">"ESTA FACTURA CONTRIBUYE AL
+                                    DESARROLLO DEL PAÍS. EL USO ILÍCITO DE ÉSTA SERÁ SANCIONADOs DE ACUERDO A
+                                    LEY"
+                                </strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td coslpan="4">
+                                <span style="font-size:12px;" t-esc="o.dosificacion.leyenda.name"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <p t-if="o.narration" name="comment">
+                        <span t-field="o.narration"/>
+                    </p>
+                </div>
+            </t>
+        </template>
+
+        <template id="report_invoice_document_bol_copia">
+            <t t-call="web.internal_layout">
+                <t t-set="o" t-value="o.with_context(lang=lang)"/>
+                <div class="page">
+                    <div style="height: 5px;">
+                    </div>
+                    <table style="border-collapse: collapse; width: 100%;">
+                        <col width="40%"/>
+                        <col width="20%"/>
+                        <col width="40%"/>
+                        <tr>
+                            <td>
+                                <div class="col-6"
+                                     style="margin-left:0px; margin-bottom:1px; text-align: left;">
+                                    <img style="width: 300px; height: 104px; margin-left: 0px;"
+                                         t-if="o.company_id.logo"
+                                         t-att-src="image_data_uri(o.company_id.logo)"
+                                         alt="Logo"/>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <h2>
+                                    <strong>FACTURA</strong>
+                                </h2>
+                            </td>
+                            <td>
+                                <div style="width:300px;">
+                                    <ul style="list-style: none; line-height:150%; font-size:14px;">
+                                        <li>
+                                            <div style="text-align:left; float:left; width:130px;">
+                                                <strong>NIT:</strong>
+                                            </div>
+                                            <div align="left" t-field="o.company_id.nit_ci"/>
+                                        </li>
+                                        <li>
+                                            <div style="text-align:left; float:left; width:130px;">
+                                                <strong>N° de Factura:</strong>
+                                            </div>
+                                            <div align="left">
+                                                <t t-esc="'%.0f'%o.n_factura"/>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div style="text-align:left; float:left; width:130px;">
+                                                <strong>N° Autorización:</strong>
+                                            </div>
+                                            <div align="left" t-field="o.n_autorizacion"/>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">
+                                <t t-if="o.warehouse_id.casa_matriz">
+                                    <ul style="list-style: none; line-height:100%; font-size:14px;
+                                                margin-top:-12px;margin-left:-65px">
+                                        <li>
+                                            <strong>CASA MATRIZ</strong>
+                                        </li>
+                                        <li>
+                                            <span t-field="o.company_id.partner_id.street"/>
+                                        </li>
+                                        <li>
+                                            Teléfono:
+                                            <span t-field="o.company_id.partner_id.phone"/>
+                                        </li>
+                                        <li>
+                                            <span t-field="o.company_id.partner_id.city"/>-
+                                            <span t-field="o.company_id.partner_id.country_id.name"/>
+                                        </li>
+                                    </ul>
+                                </t>
+                                <t t-if="not o.warehouse_id.casa_matriz">
+                                    <ul style="list-style: none; line-height:100%; font-size:12px;
+                                                margin-top:-12px;margin-left:-65px">
+                                        <li>
+                                            <strong>
+                                                <span t-field="o.warehouse_id.name"/>
+                                            </strong>
+                                        </li>
+                                        <li>
+                                            <span t-field="o.warehouse_id.partner_id.street"/>
+                                        </li>
+                                        <li>
+                                            Teléfono:
+                                            <span t-field="o.warehouse_id.partner_id.phone"/>
+                                        </li>
+                                        <li>
+                                            <span t-field="o.warehouse_id.partner_id.city"/>-
+                                            <span t-field="o.warehouse_id.partner_id.country_id.name"/>
+                                        </li>
+                                    </ul>
+                                </t>
+                            </td>
+                            <td>
+                                <h1>&amp;nbsp;</h1>
+                            </td>
+                            <td class="text-center">
+                                <ul style="list-style: none; line-height:100%; font-size:14px; margin-top:-19px">
+                                    <li>
+                                        <h5>
+                                            <strong>COPIA</strong>
+                                        </h5>
+                                        <span t-field="o.dosificacion.actividad.name"/>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                    <table>
+                        <col width="50%"/>
+                        <col width="30%"/>
+                        <col width="20%"/>
+                        <tr>
+                            <td class="text-left" colspan="3">
+                                <strong>Lugar y fecha:</strong>
+                                <t t-if="o.warehouse_id.casa_matriz">
+                                    <span t-field="o.company_id.partner_id.city"/>,
+                                </t>
+                                <t t-if="not o.warehouse_id.casa_matriz">
+                                    <span t-field="o.warehouse_id.partner_id.city"/>,
+                                </t>
+                                <!--<span t-esc="o.invoice_date.strftime(' %A, %d de %B del %Y')"/>-->
+                                <span t-field="o.invoice_date" t-options="{'format': 'EEEE, d '}"/>
+                                de
+                                <span t-field="o.invoice_date" t-options="{'format': 'MMMM '}"/>
+                                del
+                                <span t-field="o.invoice_date" t-options="{'format': 'YYYY'}"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-left" colspan="2">
+                                <strong>Señor(es):</strong>
+                                <span t-field="o.razon_social"/>
+                            </td>
+                            <td class="text-left">
+                                <strong>NIT/CI:</strong>
+                                <span t-field="o.nit_ci"/>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <!-- Is there a discount on at least one line? -->
+                    <t t-set="display_discount" t-value="any([l.discount for l in o.invoice_line_ids])"/>
+                    <table class="table table-sm" style="width:100%;">
+                        <col width="18%"/>
+                        <col width="46%"/>
+                        <col width="18%"/>
+                        <col width="18%"/>
+                        <thead>
+                            <tr style="line-height: 18px;">
+                                <th class="text-center" style="border:1px solid #000;">CANTIDAD</th>
+                                <td class="text-center" style="border:1px solid #000;">CONCEPTO</td>
+                                <th class="text-center" style="border:1px solid #000;">PRECIO UNIT</th>
+                                <td class="text-center" style="border:1px solid #000;">SUBTOTAL</td>
+                            </tr>
+                        </thead>
+                        <tbody class="invoice_tbody">
+                            <t t-set="lines"
+                               t-value="o.invoice_line_ids.sorted(key=lambda l: (-l.sequence, l.date, l.move_name, -l.id), reverse=True)"/>
+                            <t t-foreach="lines" t-as="line">
+                                <tr style="line-height: 18px;"
+                                    t-att-class="'bg-200 font-weight-bold o_line_section' if line.display_type == 'line_section' else 'font-italic o_line_note' if line.display_type == 'line_note' else ''">
+                                    <t t-if="not line.display_type" name="account_invoice_line_accountable">
+                                        <td class="text-center" style="border:1px solid #000;">
+                                            <span t-field="line.quantity"/>
+                                            <span t-field="line.uom_id" groups="product.group_uom"/>
+                                        </td>
+                                        <td style="border:1px solid #000;">
+                                            <span t-field="line.product_id.name"/>
+                                        </td>
+                                        <td class="text-right" style="border:1px solid #000;">
+                                            <t t-esc="'{0:,.2f}'.format(line.price_unit)"/>
+                                        </td>
+                                        <td class="text-right" style="border:1px solid #000;">
+                                            <t t-set="t_total" t-value="line.quantity*line.price_unit"/>
+                                            <t t-esc="'{0:,.2f}'.format(t_total)"/>
+                                        </td>
+                                    </t>
+                                    <t t-if="line.display_type == 'line_section'">
+                                        <td colspan="99" style="border:1px solid #000;">
+                                            <span t-field="line.name" t-options="{'widget': 'text'}"/>
+                                        </td>
+                                        <t t-set="current_section" t-value="line"/>
+                                        <t t-set="current_subtotal" t-value="0"/>
+                                    </t>
+                                    <t t-if="line.display_type == 'line_note'">
+                                        <td colspan="99" style="border:1px solid #000;">
+                                            <span class="o_field_text"
+                                                  t-field="line.name" t-options="{'widget': 'text'}"/>
+                                        </td>
+                                    </t>
+                                </tr>
+                            </t>
+                            <tr t-foreach="range(max(5-len(o.invoice_line_ids),0))" t-as="l"
+                                style="line-height: 18px; border:1px solid #000;">
+                                <td style="line-height: 18px; border:1px solid #000;">&amp;nbsp;</td>
+                                <td style="line-height: 18px; border:1px solid #000;"></td>
+                                <td style="line-height: 18px; border:1px solid #000;"></td>
+                                <td style="line-height: 18px; border:1px solid #000;"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" rowspan="3">
+                                    <t>
+                                        <strong>Son:</strong>
+                                        <span t-esc="o.amount_text"/>
+                                    </t>
+                                    <br></br>
+                                    <t t-if="o.amount_imp != o.amount_total">
+                                        <strong>Importe base para Crédito Fiscal, Ley° 317 Bs.:</strong>
+                                        <t t-esc="'{0:,.2f}'.format(o.amount_total-o.amount_exe - o.amount_ice_iehd)"/>
+                                    </t>
+                                    <br t-if="o.amount_imp != o.amount_total"></br>
+                                    <t>
+                                        <strong>Código de Control:</strong>
+                                        <span t-field="o.codigo_control"/>
+                                    </t>
+                                    <br></br>
+                                    <t>
+                                        <strong>Fecha Límite de Emisión:</strong>
+                                        <span t-field="o.date_end"/>
+                                    </t>
+                                </td>
+                                <td style="border:1px solid #000; height: 18px !important;">
+                                    SUBTOTAL Bs.:
+                                </td>
+                                <td class="text-right" style="border:1px solid #000; height: 18px !important;">
+                                    <t t-esc="'{0:,.2f}'.format(o.amount_open)"/>
+                                </td>
+                            </tr>
+                            <tr style="line-height: 18px;">
+                                <td style="border:1px solid #000;">
+                                    DESCUENTO Bs.:
+                                </td>
+                                <td class="text-right" style="border:1px solid #000;">
+                                    <t t-esc="'{0:,.2f}'.format(o.amount_des)"/>
+                                </td>
+                            </tr>
+                            <tr style="line-height: 18px;">
+                                <td style="border:1px solid #000;">
+                                    TOTAL Bs.:
+                                </td>
+                                <td class="text-right" style="border:1px solid #000;">
+                                    <t t-esc="'{0:,.2f}'.format(o.amount_total)"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table>
+                        <tr>
+                            <td coslpan="4">
+                                <img t-if="o.qr_image" t-att-src="image_data_uri(o.qr_image)"
+                                     class="float-right"
+                                     alt="Logo"
+                                     style="width: 150px; height: 150px; margin-right: 10px; display:inline"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td coslpan="4">
+                                <strong style="font-size:14px; font-weight: bold;">"ESTA FACTURA CONTRIBUYE AL
+                                    DESARROLLO DEL PAÍS. EL USO ILÍCITO DE ÉSTA SERÁ SANCIONADOs DE ACUERDO A
+                                    LEY"
+                                </strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td coslpan="4">
+                                <span style="font-size:12px;" t-esc="o.dosificacion.leyenda.name"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <p t-if="o.narration" name="comment">
+                        <span t-field="o.narration"/>
+                    </p>
+                </div>
+            </t>
+        </template>
+
+
+        <template id="report_invoice_bol_original">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="lang"
+                       t-value="o.user_id.lang if o.move_type in ('in_invoice', 'in_refund') else o.partner_id.lang"/>
+                    <t t-call="l10n_bo_invoice.report_invoice_document_bol_original" t-lang="lang"/>
+                </t>
+            </t>
+        </template>
+
+        <template id="report_invoice_bol_copia">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="lang"
+                       t-value="o.user_id.lang if o.move_type in ('in_invoice', 'in_refund') else o.partner_id.lang"/>
+                    <t t-call="l10n_bo_invoice.report_invoice_document_bol_copia" t-lang="lang"/>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>

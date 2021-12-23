@@ -1,0 +1,31 @@
+<odoo>
+    <data>
+        <!-- Inherit Form View to Modify it -->
+        <record id="view_inherit_purchase_order_form" model="ir.ui.view">
+            <field name="name">view.inherit.purchase.order.form</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+
+                <!-- position: after|before|replace|attributes|inside -->
+                <xpath expr="//field[@name='product_qty']" position="after">
+                    <field name="product_volume" optional="hide"/>
+                    <field name="product_weight" optional="hide"/>
+                    <field name="amount_ali_esp" optional="hide"/>
+                    <field name="amount_ali_por" optional="hide"/>
+                    <!--<field name="discount_amount" optional="hide"/>-->
+                </xpath>
+                <!-- position values: after|before|replace|attributes|inside -->
+                <xpath expr="//field[@name='amount_tax']" position="after">
+                    <!--<field name="discount_total"/>-->
+                    <field name="amount_ali_esp"/>
+                    <field name="amount_ali_por"/>
+                    <field name="amount_ice" string="ICE Total" force_save="1"/>
+                    <field name="volume_total" invisible="1"/>
+                    <field name="weight_total" invisible="1"/>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

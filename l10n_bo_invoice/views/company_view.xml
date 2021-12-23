@@ -1,0 +1,26 @@
+<odoo>
+    <data>
+
+        <!-- Inherit Form View to Modify it -->
+        <record id="view_inherit_res_company_form" model="ir.ui.view">
+            <field name="name">view.inherit.res.company.form</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="arch" type="xml">
+                
+                <!-- position: after|before|replace|attributes|inside -->
+                <xpath expr="//field[@name='phone']" position="after">
+                    <field name="razon_social" />
+                    <field name="nit_ci" />
+                </xpath>
+
+                <xpath expr="//field[@name='currency_id']" position="after">
+                    <field name="account_discount_id"/>
+                    <field name="amount_valid"/>
+                </xpath>
+                
+            </field>
+        </record>
+
+    </data>
+</odoo>

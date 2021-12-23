@@ -1,0 +1,35 @@
+<odoo>
+    <data>
+
+        <record id="view_economic_activity_tree" model="ir.ui.view">
+            <field name="name">view.economic.activity.tree</field>
+            <field name="model">economic.activity</field>
+            <field name="arch" type="xml">
+                <tree string="Actividad Económica" editable="bottom">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_economic_activity_view" model="ir.actions.act_window">
+            <field name="name">Actividades Económicas</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">economic.activity</field>
+            <field name="view_mode">tree</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Clic en CREAR para agregar una nueva Actividad Económica para su asignación en Dosificaciones
+              </p><p>
+
+              </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_economic_activity_root"
+                  name="Actividades Económicas"
+                  sequence="0"
+                  action="action_economic_activity_view"
+                  parent="menu_valid_code_control_root"/>
+
+    </data>
+</odoo>

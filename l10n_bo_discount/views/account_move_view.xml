@@ -1,0 +1,35 @@
+<odoo>
+    <data>
+
+        <!-- Inherit Form View to Modify it -->
+        <record id="view_inherit_account_move_discount_form" model="ir.ui.view">
+            <field name="name">view.inherit.account.move.discount.form</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="l10n_bo_invoice.view_inherit_account_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='invoice_line_ids']/tree//field[@name='amount_ice_iehd']" position="before">
+                    <field name="disc" invisible="context.get('default_move_type') != ('out_invoice')"/>
+                    <field name="total_discount" invisible="1"/>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']/tree//field[last()]" position="after">
+                    <field name="disc" invisible="1"/>
+                    <field name="total_discount" invisible="1"/>
+                </xpath>
+
+                <xpath expr="//field[@name='global_discount_type']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='invoice_line_ids']" position="before">
+                    <label for="cal_discount" class="btn btn-ship btn-primary oe_edit_only"
+                           style="margin-bottom:20px; float:right;"
+                           attrs="{'invisible':[('move_type','!=','out_invoice')]}"/>
+                    <field name="cal_discount" class="oe_edit_only"
+                           style="display:none;"
+                           attrs="{'invisible':[('move_type','!=','out_invoice')]}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
